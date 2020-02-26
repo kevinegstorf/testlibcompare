@@ -16,13 +16,18 @@ const CommentBox = props => {
   };
 
   return (
-    <form data-testid="comment-box" onSubmit={handleSubmit}>
-      <h4>Add a comment</h4>
-      <textarea value={comment} onChange={textHandler} />
-      <div>
-        <button>Submit Comment</button>
-      </div>
-    </form>
+    <>
+      <form data-testid="comment-box" onSubmit={handleSubmit}>
+        <h4>Add a comment</h4>
+        <textarea value={comment} onChange={textHandler} />
+        <div>
+          <button>Submit Comment</button>
+        </div>
+      </form>
+      <button id="fetch-comments" onClick={props.fetchComments}>
+        Fetch Comments
+      </button>
+    </>
   );
 };
 
