@@ -2,7 +2,7 @@ import React from "react";
 import CommentBox from "components/CommentBox";
 import Root from "Root";
 import { mount } from "enzyme";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 
 describe("Enzyme CommentBox", () => {
   let wrapped;
@@ -25,7 +25,7 @@ describe("Enzyme CommentBox", () => {
     expect(wrapped.find("button").length).not.toBe(0);
   });
 
-  describe("textarea behaviour", () => {
+  describe("Enzyme textarea behaviour", () => {
     let comment;
     beforeEach(() => {
       comment = "new comment";
@@ -57,6 +57,51 @@ describe("Enzyme CommentBox", () => {
     });
   });
 });
+
 describe("Test Lib CommentBox", () => {
-  it("has a text area and a button", () => {});
+  it("has a text area and a button", () => {
+    const { getAllByTestId } = render(
+      <Root>
+        <CommentBox />
+      </Root>
+    );
+    const submit = getAllByTestId("comment-box-submit");
+    const fetch = getAllByTestId("comments-fetch");
+    const textArea = getAllByTestId("text-area");
+
+    expect(submit.length).toBe(1);
+    expect(submit.length).not.toBe(0);
+    expect(fetch.length).toBe(1);
+    expect(fetch.length).not.toBe(0);
+    expect(textArea.length).toBe(1);
+    expect(textArea.length).not.toBe(0);
+  });
+
+  describe("Test Lib textarea behaviour", () => {
+    it("has a text area that users can type in and clears text area when submit button is pressed", () => {
+      const comment = "new comment";
+
+      const { getByTestId } = render(
+        <Root>
+          <CommentBox />
+        </Root>
+      );
+
+      const textArea = getByTestId("text-area");
+      const form = getByTestId("comment-box");
+      textArea.value = comment;
+
+      fireEvent.change(textArea);
+
+      expect(textArea.value).toBe(comment);
+      expect(textArea.value).not.toBe("");
+      expect(textArea.value).not.toBe(undefined);
+
+      fireEvent.submit(form);
+
+      expect(textArea.value).not.toBe(comment);
+      expect(textArea.value).toBe("");
+      expect(textArea.value).not.toBe(undefined);
+    });
+  });
 });
